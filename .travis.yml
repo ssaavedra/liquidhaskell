@@ -1,5 +1,6 @@
-sudo: required
-language: c
+sudo: false
+language: haskell
+ghc: 7.10.3 # Only needed for cabal
 
 # Only build master, develop, and PRs
 branches:
@@ -19,15 +20,12 @@ cache:
 
 before_install:
 # Download and unpack the stack executable
-- sudo apt-add-repository -y ppa:hvr/z3
-- sudo apt-get -y update
-- sudo apt-get -y install z3
 - mkdir -p ~/.local/bin
 - export PATH=$HOME/.local/bin:$PATH
 - travis_retry curl -L https://www.stackage.org/stack/linux-x86_64 | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
 - travis_retry stack setup "$GHC"
 - travis_retry stack install cabal-install
-# - scripts/travis install_smt "$SMT"
+- scripts/travis install_smt "$SMT"
 
 env:
   global:
